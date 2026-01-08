@@ -1,0 +1,24 @@
+{
+    "name": "suivi-jetons-poudlard",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+    "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+},
+    "dependencies": {
+    "lucide-react": "^0.294.0",
+        "next": "14.0.3",
+        "react": "^18",
+        "react-dom": "^18",
+        "clsx": "^2.0.0",
+        "tailwind-merge": "^2.0.0"
+},
+    "devDependencies": {
+    "autoprefixer": "^10.0.1",
+        "postcss": "^8",
+        "tailwindcss": "^3.3.0"
+}
+}
