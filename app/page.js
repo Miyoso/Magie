@@ -7,7 +7,8 @@ export default function TokenTracker() {
     // Données de base
     const defaultCourses = [
         { id: 1, title: 'ALCHIMIE - BOTANIQUE', icon: 'leaf', current: 18, max: 30, status: 'En cours' },
-        { id: 2, title: 'SORTS', icon: 'sparkles', current: 19, max: 40, status: 'Priorité moyenne', priority: true },
+        // MODIFICATION ICI : J'ai enlevé "priority: true" et changé le statut en "En cours"
+        { id: 2, title: 'SORTS', icon: 'sparkles', current: 19, max: 40, status: 'En cours' },
         { id: 3, title: 'POTIONS', icon: 'flask', current: 11, max: 20, status: 'En cours' },
         { id: 4, title: 'HISTOIRE DE LA MAGIE', icon: 'scroll', current: 13, max: 20, status: 'En cours' },
         { id: 5, title: 'CRÉATURES MAGIQUES', icon: 'ghost', current: 12, max: 20, status: 'En cours' },
@@ -37,13 +38,12 @@ export default function TokenTracker() {
     const getIcon = (name) => {
         const className = "w-5 h-5";
         switch(name) {
-            // J'ai refroidi les couleurs des icônes pour aller avec le thème bleu
             case 'leaf': return <Leaf className={`${className} text-emerald-400`} />;
             case 'sparkles': return <Sparkles className={`${className} text-cyan-300`} />;
             case 'flask': return <FlaskConical className={`${className} text-blue-400`} />;
             case 'scroll': return <Scroll className={`${className} text-slate-300`} />;
             case 'ghost': return <Ghost className={`${className} text-indigo-300`} />;
-            case 'trophy': return <Trophy className={`${className} text-sky-400`} />; // Trophée bleu céleste au lieu de jaune
+            case 'trophy': return <Trophy className={`${className} text-sky-400`} />;
             case 'zap': return <Zap className={`${className} text-violet-400`} />;
             default: return <Zap className={className} />;
         }
@@ -66,6 +66,7 @@ export default function TokenTracker() {
 
     const resetAll = () => {
         if(confirm("Veux-tu vraiment tout remettre à ZÉRO ?")) {
+            // Remise à zéro tout en gardant la structure propre (sans priorité)
             const zeroCourses = defaultCourses.map(course => ({
                 ...course,
                 current: 0
@@ -77,11 +78,9 @@ export default function TokenTracker() {
     if (!isLoaded) return <div className="min-h-screen bg-[#0f1219] text-blue-400 flex items-center justify-center font-serif">Chargement de la magie...</div>;
 
     return (
-        // Changement de la couleur de sélection en bleu
         <div className="min-h-screen bg-[#0f1219] text-slate-200 p-6 selection:bg-blue-900 selection:text-white">
             <header className="mb-8 flex justify-between items-start">
                 <div>
-                    {/* Titre en bleu (blue-400) au lieu de amber-500 */}
                     <h1 className="text-3xl font-serif text-blue-400 tracking-wider">SUIVI DES JETONS</h1>
                     <p className="text-xs text-slate-500 mt-1">Gérez votre progression académique</p>
                 </div>
@@ -91,10 +90,10 @@ export default function TokenTracker() {
             </header>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                {/* Icônes des stats passées en bleu/cyan */}
                 <StatCard icon={<Target className="text-blue-400 mb-2" />} value={`${totalPoints}/${maxPoints}`} label="Points Totaux" />
                 <StatCard icon={<Trophy className="text-sky-400 mb-2" />} value={`${completedCourses}/7`} label="Cours Complétés" />
                 <StatCard icon={<BookOpen className="text-indigo-400 mb-2" />} value="7" label="Total Cours" />
+                {/* Le compteur affichera maintenant 0 car aucun cours n'a la propriété 'priority' */}
                 <StatCard icon={<AlertTriangle className="text-red-900 mb-2" />} value={highPriorityCount} label="Haute Priorité" />
             </div>
 
@@ -104,25 +103,21 @@ export default function TokenTracker() {
                     <span className="text-blue-400 font-bold">{totalPoints} / {maxPoints}</span>
                 </div>
                 <div className="h-2 bg-[#1e2330] rounded-full overflow-hidden">
-                    {/* Barre de progression globale : Dégradé Bleu -> Cyan */}
                     <div className="h-full bg-gradient-to-r from-blue-700 to-cyan-400 transition-all duration-500" style={{ width: `${(totalPoints / maxPoints) * 100}%` }}></div>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {courses.map(course => (
-                    // Bordure au survol : Bleu
                     <div key={course.id} className="bg-[#161b25] border border-slate-800/50 rounded-lg p-5 hover:border-blue-500/50 transition-colors shadow-lg shadow-black/40">
                         <div className="flex items-start gap-3 mb-4">
                             <div className="mt-1">{getIcon(course.icon)}</div>
                             <div className="w-full">
                                 <div className="flex justify-between">
                                     <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wide">{course.title}</h3>
-                                    {/* Score en bleu */}
                                     <span className="text-blue-400 font-serif text-lg">{course.current} <span className="text-xs text-slate-500">/ {course.max}</span></span>
                                 </div>
                                 <div className="h-2 bg-[#0f1219] rounded-full overflow-hidden border border-slate-800 mt-2">
-                                    {/* Barres individuelles : Dégradé Bleu Foncé -> Bleu Clair */}
                                     <div className="h-full bg-gradient-to-r from-blue-800 via-blue-600 to-cyan-400 transition-all duration-300" style={{ width: `${(course.current / course.max) * 100}%` }}></div>
                                 </div>
                             </div>
@@ -133,7 +128,6 @@ export default function TokenTracker() {
                                 {course.current >= course.max ? <span className="text-cyan-400 font-bold shadow-cyan-500/20 drop-shadow-sm">Terminé !</span> : `Reste: ${course.max - course.current}`}
                             </p>
                             <div className="flex gap-1">
-                                {/* Boutons de contrôle : Hover bleu */}
                                 <ControlButton onClick={() => updatePoints(course.id, -1)}>-</ControlButton>
                                 <ControlButton onClick={() => updatePoints(course.id, 1)}>+</ControlButton>
                                 <ControlButton onClick={() => updatePoints(course.id, 5)}>+5</ControlButton>
