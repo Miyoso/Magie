@@ -93,8 +93,7 @@ export default function TokenTracker() {
                 <StatCard icon={<Target className="text-blue-400 mb-2" />} value={`${totalPoints}/${maxPoints}`} label="Points Totaux" />
                 <StatCard icon={<Trophy className="text-sky-400 mb-2" />} value={`${completedCourses}/7`} label="Cours Complétés" />
                 <StatCard icon={<BookOpen className="text-indigo-400 mb-2" />} value="7" label="Total Cours" />
-                {/* Le compteur affichera maintenant 0 car aucun cours n'a la propriété 'priority' */}
-                <StatCard icon={<AlertTriangle className="text-red-900 mb-2" />} value={highPriorityCount} label="Haute Priorité" />
+                
             </div>
 
             <div className="mb-6">
