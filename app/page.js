@@ -88,7 +88,7 @@ export default function TokenTracker() {
                             SUIVI DES JETONS
                         </h1>
                         <p className="text-sm text-cyan-200/60 mt-2 font-serif tracking-wide flex items-center gap-2">
-                            <Sparkles className="w-3 h-3" /> Académie de Magie - Année 1
+                            <Sparkles className="w-3 h-3" /> Année 1
                         </p>
                     </div>
                     <button
