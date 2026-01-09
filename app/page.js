@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Leaf, Sparkles, FlaskConical, Scroll, Ghost, Trophy, Zap, BookOpen, AlertTriangle, Target } from 'lucide-react';
 
 export default function TokenTracker() {
+    // Données de base (structure des cours)
     const defaultCourses = [
         { id: 1, title: 'ALCHIMIE - BOTANIQUE', icon: 'leaf', current: 18, max: 30, status: 'En cours' },
         { id: 2, title: 'SORTS', icon: 'sparkles', current: 19, max: 40, status: 'Priorité moyenne', priority: true },
@@ -17,6 +18,7 @@ export default function TokenTracker() {
     const [courses, setCourses] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
+    // Chargement initial
     useEffect(() => {
         const savedData = localStorage.getItem('poudlard-tracker-v1');
         if (savedData) {
@@ -27,6 +29,7 @@ export default function TokenTracker() {
         setIsLoaded(true);
     }, []);
 
+    // Sauvegarde automatique
     useEffect(() => {
         if (isLoaded) {
             localStorage.setItem('poudlard-tracker-v1', JSON.stringify(courses));
@@ -62,9 +65,15 @@ export default function TokenTracker() {
         }));
     };
 
+    // --- C'EST ICI QUE ÇA CHANGE ---
     const resetAll = () => {
-        if(confirm("Veux-tu vraiment réinitialiser toute ta progression ?")) {
-            setCourses(defaultCourses);
+        if(confirm("Veux-tu vraiment tout remettre à ZÉRO ?")) {
+            // On prend la structure par défaut, mais on force 'current' à 0 pour tous
+            const zeroCourses = defaultCourses.map(course => ({
+                ...course,
+                current: 0
+            }));
+            setCourses(zeroCourses);
         }
     };
 
@@ -78,7 +87,7 @@ export default function TokenTracker() {
                     <p className="text-xs text-slate-500 mt-1">Gérez votre progression académique</p>
                 </div>
                 <button onClick={resetAll} className="border border-red-900 text-red-500 hover:bg-red-900/20 px-4 py-1 rounded text-xs transition-colors">
-                    Réinitialiser
+                    Réinitialiser à 0
                 </button>
             </header>
 
