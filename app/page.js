@@ -1,18 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Leaf, Sparkles, FlaskConical, Scroll, Ghost, Trophy, Zap, BookOpen, AlertTriangle, Target, Star } from 'lucide-react';
+import { Leaf, Sparkles, FlaskConical, Scroll, Ghost, Trophy, Zap, BookOpen, Target, Star } from 'lucide-react';
 
 export default function TokenTracker() {
-    // Données de base
+    // Données de base (Nettoyées de toute propriété "priority")
     const defaultCourses = [
-        { id: 1, title: 'ALCHIMIE - BOTANIQUE', icon: 'leaf', current: 18, max: 30, status: 'En cours' },
-        { id: 2, title: 'SORTS', icon: 'sparkles', current: 19, max: 40, status: 'En cours' },
-        { id: 3, title: 'POTIONS', icon: 'flask', current: 11, max: 20, status: 'En cours' },
-        { id: 4, title: 'HISTOIRE DE LA MAGIE', icon: 'scroll', current: 13, max: 20, status: 'En cours' },
-        { id: 5, title: 'CRÉATURES MAGIQUES', icon: 'ghost', current: 12, max: 20, status: 'En cours' },
-        { id: 6, title: 'CLUB', icon: 'trophy', current: 8, max: 10, status: 'En cours' },
-        { id: 7, title: 'DIVERS', icon: 'zap', current: 21, max: 40, status: 'En cours' },
+        { id: 1, title: 'ALCHIMIE - BOTANIQUE', icon: 'leaf', current: 18, max: 30 },
+        { id: 2, title: 'SORTS', icon: 'sparkles', current: 19, max: 40 },
+        { id: 3, title: 'POTIONS', icon: 'flask', current: 11, max: 20 },
+        { id: 4, title: 'HISTOIRE DE LA MAGIE', icon: 'scroll', current: 13, max: 20 },
+        { id: 5, title: 'CRÉATURES MAGIQUES', icon: 'ghost', current: 12, max: 20 },
+        { id: 6, title: 'CLUB', icon: 'trophy', current: 8, max: 10 },
+        { id: 7, title: 'DIVERS', icon: 'zap', current: 21, max: 40 },
     ];
 
     const [courses, setCourses] = useState([]);
@@ -35,7 +35,6 @@ export default function TokenTracker() {
     }, [courses, isLoaded]);
 
     const getIcon = (name) => {
-        // Ajout d'un filtre "drop-shadow" pour que les icônes brillent un peu
         const className = "w-6 h-6 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]";
         switch(name) {
             case 'leaf': return <Leaf className={`${className} text-emerald-400`} />;
@@ -52,7 +51,6 @@ export default function TokenTracker() {
     const totalPoints = courses.reduce((acc, course) => acc + (course.current || 0), 0);
     const maxPoints = courses.reduce((acc, course) => acc + (course.max || 0), 0);
     const completedCourses = courses.filter(c => c.current >= c.max).length;
-    const highPriorityCount = courses.filter(c => c.priority).length;
 
     const updatePoints = (id, amount) => {
         setCourses(courses.map(course => {
@@ -77,7 +75,6 @@ export default function TokenTracker() {
     if (!isLoaded) return <div className="min-h-screen bg-[#0f1219] flex items-center justify-center font-serif text-cyan-500 animate-pulse">Incantation en cours...</div>;
 
     return (
-        // AMÉLIORATION 1 : Fond avec un dégradé radial subtil pour la profondeur
         <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0c12] to-black text-slate-200 p-6 font-sans selection:bg-cyan-500/30 selection:text-cyan-100">
 
             {/* Effet de lumière d'ambiance en haut */}
@@ -103,12 +100,12 @@ export default function TokenTracker() {
                     </button>
                 </header>
 
-                {/* STATS CARDS - AMÉLIORATION 2 : Glassmorphism */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                {/* STATS CARDS - Mise à jour : 3 colonnes au lieu de 4 */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
                     <StatCard icon={<Target className="text-cyan-400" />} value={`${totalPoints}/${maxPoints}`} label="Points Totaux" />
                     <StatCard icon={<Trophy className="text-sky-400" />} value={`${completedCourses}/7`} label="Cours Complétés" />
                     <StatCard icon={<BookOpen className="text-indigo-400" />} value="7" label="Total Cours" />
-                    <StatCard icon={<Star className="text-amber-200" />} value={highPriorityCount} label="Haute Priorité" />
+                    {/* La carte Haute Priorité a été supprimée */}
                 </div>
 
                 {/* PROGRESSION GLOBALE */}
@@ -136,7 +133,6 @@ export default function TokenTracker() {
                 {/* GRILLE DES COURS */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                     {courses.map(course => (
-                        // AMÉLIORATION 3 : Cartes avec effet de survol, bordure lumineuse subtile et fond vitré
                         <div key={course.id} className="group relative bg-[#13161f]/80 backdrop-blur-md border border-white/5 rounded-xl p-6 hover:border-cyan-500/30 hover:bg-[#1a1f2e]/90 transition-all duration-300 hover:shadow-[0_0_20px_rgba(6,182,212,0.1)] hover:-translate-y-1">
 
                             {/* Header Carte */}
@@ -163,7 +159,6 @@ export default function TokenTracker() {
                                             `}
                                             style={{ width: `${(course.current / course.max) * 100}%` }}
                                         >
-                                            {/* Petit éclat au bout de la barre */}
                                             <div className="absolute right-0 top-0 h-full w-1 bg-white/50 blur-[1px]"></div>
                                         </div>
                                     </div>
@@ -191,7 +186,6 @@ export default function TokenTracker() {
     );
 }
 
-// Composant StatCard amélioré (Glassmorphism)
 function StatCard({ icon, value, label }) {
     return (
         <div className="bg-white/5 backdrop-blur-md border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-300 group shadow-lg">
@@ -202,7 +196,6 @@ function StatCard({ icon, value, label }) {
     );
 }
 
-// Bouton de contrôle amélioré (Effet tactile)
 function ControlButton({ children, onClick, special }) {
     return (
         <button
